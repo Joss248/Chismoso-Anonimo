@@ -3,7 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Observa, registra y reporta incidencias de tu entorno, incluso sin conexión.">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Chismoso">
+  <meta name="app-shell-version" content="2">
   <title>Chismoso Anónimo</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/icons/icon-192.png?favicon=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
   <link rel="stylesheet" href="./css/styles.css">
   <script type="module" src="./js/app.js"></script>
 </head>
@@ -11,12 +19,15 @@
   <a class="skip" href="#contenido">Ir al contenido</a>
   <header class="topbar">
     <div class="brand">
-      <span class="brand-mark" data-icon="brand"></span>
+      <img class="brand-mark" src="./assets/icons/icon-192.png" width="44" height="44" alt="">
       <div><strong>Chismoso Anónimo</strong><small>Observa, registra y reporta</small></div>
     </div>
     <div class="top-actions">
       <span id="connection" class="connection" role="status"></span>
-      <div id="install-slot" hidden></div>
+      <div id="install-slot" hidden>
+        <button id="install-button" type="button" class="install-button">Instalar</button>
+        <span id="install-status" class="visually-hidden" role="status"></span>
+      </div>
     </div>
   </header>
   <div class="shell">
@@ -27,6 +38,12 @@
     </nav>
     <main id="contenido" tabindex="-1"></main>
   </div>
+  <dialog id="install-help" aria-labelledby="install-title">
+    <h2 id="install-title">Cómo instalar Chismoso</h2>
+    <p>En Safari para iPhone o iPad, abre <strong>Compartir</strong> y elige <strong>Añadir a pantalla de inicio</strong>.</p>
+    <p>En otros navegadores, busca <strong>Instalar aplicación</strong> o <strong>Añadir a pantalla de inicio</strong> en el menú. En escritorio, revisa también la barra de direcciones. Si la opción no aparece, puedes seguir usando la aplicación en el navegador.</p>
+    <form method="dialog"><button class="button primary" autofocus>Cerrar</button></form>
+  </dialog>
   <noscript>Activa JavaScript para utilizar Chismoso Anónimo.</noscript>
 </body>
 </html>

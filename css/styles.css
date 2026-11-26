@@ -55,14 +55,16 @@ button:not(:disabled) { cursor: pointer; }
 .brand strong { display: block; font-size: 1.05rem; }
 .brand small { display: block; color: #cbd5e1; }
 .brand-mark, .tile {
-  display: grid;
-  place-items: center;
   width: 44px;
   height: 44px;
   flex: none;
+}
+.brand-mark { display: block; }
+.tile {
+  display: grid;
+  place-items: center;
   border-radius: 12px;
 }
-.brand-mark { background: var(--blue); }
 .connection {
   display: inline-flex;
   align-items: center;
@@ -75,6 +77,29 @@ button:not(:disabled) { cursor: pointer; }
 }
 .connection::before { content: ''; width: 8px; height: 8px; flex: none; border-radius: 50%; background: var(--sky); }
 .connection.offline::before { background: #fbbf24; }
+.install-button {
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid #64748b;
+  border-radius: 8px;
+  background: #1e293b;
+  color: var(--white);
+  font-size: .82rem;
+  font-weight: 650;
+}
+.install-button:hover:not(:disabled) { background: #334155; }
+.install-button:focus-visible { outline-color: var(--sky); }
+#install-help {
+  width: min(92vw, 440px);
+  max-height: 90dvh;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  color: var(--navy);
+  box-shadow: var(--shadow);
+}
+#install-help::backdrop { background: rgb(15 23 42 / 55%); }
+#install-help p, #install-help form { margin-top: 12px; }
 
 .shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: calc(100dvh - 76px); }
 .navigation { background: var(--white); border-right: 1px solid var(--line); padding: 26px 14px; }
@@ -257,6 +282,8 @@ select { max-inline-size: 100%; }
 }
 
 @media (max-width: 520px) {
+  .topbar { flex-wrap: wrap; }
+  .top-actions { flex-wrap: wrap; gap: 6px; margin-inline-start: auto; }
   .brand { gap: 8px; }
   .brand strong { font-size: .93rem; }
   .brand small { font-size: .72rem; }

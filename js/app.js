@@ -1,8 +1,12 @@
 import { startRouter } from './router.js';
 import { icon } from './views/components.js';
+import { setupInstallation } from './services/install-app.js';
+import { registerServiceWorker } from './services/register-worker.js';
 
 const main = document.querySelector('main');
 const connection = document.querySelector('#connection');
+setupInstallation();
+registerServiceWorker();
 
 for (const element of document.querySelectorAll('[data-icon]')) {
   element.innerHTML = icon(element.dataset.icon);
