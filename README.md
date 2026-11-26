@@ -20,7 +20,7 @@ Los reportes se guardarán en el navegador y no se enviarán a terceros. La apli
 
 ## Estructura propuesta
 
-Los siguientes archivos y directorios de la aplicación se crearán en las etapas autorizadas. La ubicación del Service Worker en la raíz permitirá que cubra toda la aplicación.
+El árbol incluye archivos actuales y previstos. La ubicación del Service Worker en la raíz permitirá que cubra toda la aplicación.
 
 ```text
 Chismoso-Anonimo/
@@ -38,13 +38,25 @@ Chismoso-Anonimo/
 │   └── styles.css               Estilos y diseño responsivo
 └── js/
     ├── app.js                   Inicio y navegación
+    ├── router.js                Navegación por hash y renderizado de vistas
     ├── data/
     │   └── reports-db.js         Persistencia de reportes en IndexedDB
     ├── services/
     │   ├── camera.js             Captura fotográfica
     │   └── geolocation.js        Obtención de coordenadas
     └── views/
+        ├── components.js         Iconos y elementos compartidos
         ├── dashboard.js          Panel de estadísticas
         ├── reports.js            Consulta y eliminación de reportes
         └── report-form.js        Registro y edición de incidencias
 ```
+
+Los iconos de la interfaz están en `assets/icons/ui.svg`.
+
+## Ejecutar con Live Server
+
+1. Abre la carpeta del proyecto en Visual Studio Code.
+2. Con la extensión Live Server disponible, haz clic derecho sobre `index.html` y selecciona **Open with Live Server**.
+3. Usa la dirección local que abra el navegador. Puedes acceder directamente a `#inicio`, `#registrar` y `#reportes`.
+
+Sirve el proyecto por HTTP local para que el navegador pueda cargar los módulos JavaScript.
