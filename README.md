@@ -47,7 +47,9 @@ Chismoso-Anonimo/
     └── views/
         ├── components.js         Iconos y elementos compartidos
         ├── dashboard.js          Panel de estadísticas
-        ├── reports.js            Consulta y eliminación de reportes
+        ├── reports.js            Búsqueda, filtros y gestión de reportes
+        ├── report-card.js        Tarjetas de incidencias
+        ├── report-evidence.js    Controles de fotografía y ubicación
         └── report-form.js        Registro y edición de incidencias
 ```
 
@@ -60,3 +62,14 @@ Los iconos de la interfaz están en `assets/icons/ui.svg`.
 3. Usa la dirección local que abra el navegador. Puedes acceder directamente a `#inicio`, `#registrar` y `#reportes`.
 
 Sirve el proyecto por HTTP local para que el navegador pueda cargar los módulos JavaScript.
+
+## Verificación local
+
+1. Registra una incidencia y recarga **Mis reportes** usando la misma dirección y el mismo puerto. Comprueba que conserve los datos y que **Inicio** actualice los totales.
+2. Busca por título o descripción, combina los filtros, cambia el estado y edita la incidencia. Prueba cancelar y luego confirmar su eliminación.
+3. Desde `localhost` o HTTPS, permite y deniega la cámara y la ubicación. Comprueba que puedes guardar sin evidencia. Con la cámara abierta, abandona el formulario y verifica que se apague el indicador de uso del navegador.
+4. Comprueba los controles de selección a 320, 375, 390, 768 y 1280 px. Abre un selector con Enter o Espacio, recorre las opciones con las flechas y confirma con Enter. Comprueba que Escape y un toque fuera cierren el menú, y que Tab continúe al siguiente control. Prueba también en un teléfono.
+
+Chrome puede recordar los permisos del origen, que incluye el protocolo, el host y el puerto. Para volver a probar el aviso, restablece los permisos de cámara y ubicación desde la configuración del sitio. Al abrir el formulario, ambas funciones deben permanecer inactivas hasta que pulses su botón.
+
+La base local `ChismosoAnonimoDB` (versión 1) guarda las incidencias en el almacén `reportes` por UUID. Cada registro incluye título, descripción, categoría, prioridad, estado y fechas de creación y actualización en formato ISO. La fotografía se guarda como Blob JPEG y la ubicación como latitud, longitud y precisión en metros. Ambos campos admiten `null`.
