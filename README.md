@@ -1,101 +1,185 @@
+<p align="center">
+  <img src="assets/icons/icon-192.png" width="96" height="96" alt="Icono de Chismoso Anónimo">
+</p>
+
 # Chismoso Anónimo
 
 **Observa, registra y reporta.**
 
-Chismoso Anónimo es un proyecto académico para desarrollar una aplicación web progresiva (PWA) que permita registrar y administrar incidencias del entorno, incluso sin conexión a Internet.
+Chismoso Anónimo es una aplicación web progresiva (PWA) académica para registrar y gestionar incidencias del entorno. Se puede instalar y, después de la primera carga en línea, permite trabajar sin conexión.
 
-## Objetivo
+**[Abrir la aplicación publicada en Vercel (HTTPS)](https://chismoso-anonimo.vercel.app/)** · [Repositorio público en GitHub](https://github.com/Joss248/Chismoso-Anonimo)
 
-Registrar cada incidencia con título, descripción, categoría, prioridad, evidencia fotográfica y coordenadas geográficas. La aplicación incluirá un panel de estadísticas y permitirá consultar, editar y eliminar reportes, así como gestionar sus estados: pendiente, en proceso y resuelto.
+## Caso de uso y objetivo
 
-Los reportes se guardarán en el navegador y no se enviarán a terceros. La aplicación se podrá instalar y funcionará sin backend, autenticación ni base de datos remota.
+Una persona que detecta una luminaria averiada, una fuga de agua o un problema de limpieza puede registrar lo observado, asignar una prioridad y dar seguimiento a la incidencia. El objetivo es demostrar cómo una PWA puede mantener un registro local de incidencias y conservar su utilidad cuando se pierde la conexión.
 
-## Tecnologías previstas
+## Funcionalidades principales
 
-- **HTML5, CSS3 y JavaScript vanilla** para una App Shell responsiva con renderizado del lado del cliente (CSR).
-- **IndexedDB** para persistencia local asíncrona.
-- **Service Worker** para la caché estática y dinámica, y **Web App Manifest** con iconos PNG de 192 × 192 y 512 × 512 píxeles para la instalación.
-- **MediaDevices API** para capturar fotografías y **Geolocation API** para obtener coordenadas.
-- **Git y GitHub** para el control de versiones y **Vercel** para la publicación por HTTPS.
+- **Inicio** presenta el total de reportes y los conteos de pendientes, en proceso y resueltos, además de las tres incidencias más recientes.
+- **Registrar** permite capturar título, descripción, categoría, prioridad y estado, con fotografía y ubicación opcionales.
+- **Mis reportes** permite buscar por título o descripción, filtrar por categoría y estado, editar, cambiar el estado y eliminar con confirmación.
+- La interfaz se adapta a escritorio y móvil. El encabezado indica el estado de conexión informado por el navegador.
 
-## Estructura
+## Tecnologías utilizadas
 
-El Service Worker está en la raíz para cubrir el directorio de la aplicación.
+| Tecnología | Uso |
+| --- | --- |
+| HTML5, CSS3 y JavaScript vanilla | Interfaz responsiva, componentes accesibles y renderizado del lado del cliente. |
+| IndexedDB | Almacenamiento asíncrono de reportes y evidencia. |
+| Service Worker y Cache Storage | Precarga, caché dinámica y acceso sin conexión. |
+| Web App Manifest | Nombre, ámbito, modo independiente e iconos estándar y *maskable* para la instalación. |
+| MediaDevices, Canvas y Geolocation | Captura fotográfica, generación de JPEG y obtención de coordenadas. |
+| Git, GitHub y Vercel | Control de versiones, repositorio público y publicación HTTPS. |
+
+## Arquitectura App Shell y CSR
+
+La App Shell mantiene el encabezado y la navegación. En escritorio usa un menú lateral y en móvil, una barra inferior. El enrutador interpreta los fragmentos `#inicio`, `#registrar` y `#reportes` y renderiza la vista correspondiente en el área principal sin recargar el documento. Las vistas consultan el módulo de IndexedDB y los servicios encapsulan el acceso a las APIs del navegador.
+
+## Estructura del proyecto
 
 ```text
 Chismoso-Anonimo/
-├── AGENTS.md
 ├── .gitignore
+├── AGENTS.md
 ├── README.md
-├── index.html                   App Shell
-├── manifest.json                Metadatos de instalación
-├── sw.js                        Caché estática y dinámica
+├── index.html
+├── manifest.json
+├── sw.js
 ├── assets/
 │   └── icons/
-│       ├── icon-192.png e icon-512.png
-│       ├── maskable-192.png y maskable-512.png
 │       ├── apple-touch-icon.png
+│       ├── icon-192.png
+│       ├── icon-512.png
+│       ├── maskable-192.png
+│       ├── maskable-512.png
 │       └── ui.svg
 ├── css/
-│   └── styles.css               Estilos y diseño responsivo
+│   └── styles.css
+├── docs/
+│   └── screenshots/
+│       ├── dashboard.png
+│       ├── instalacion.png
+│       ├── offline.png
+│       ├── registro.png
+│       ├── reportes.png
+│       └── vista-movil.png
 └── js/
-    ├── app.js                   Inicio y navegación
-    ├── router.js                Navegación por hash y renderizado de vistas
+    ├── app.js
+    ├── router.js
     ├── data/
-    │   └── reports-db.js         Persistencia de reportes en IndexedDB
+    │   └── reports-db.js
     ├── services/
-    │   ├── camera.js             Captura fotográfica
-    │   ├── geolocation.js        Obtención de coordenadas
-    │   ├── install-app.js        Diálogo y ayuda de instalación
-    │   └── register-worker.js    Registro del Service Worker
+    │   ├── camera.js
+    │   ├── geolocation.js
+    │   ├── install-app.js
+    │   └── register-worker.js
     └── views/
-        ├── components.js         Iconos y elementos compartidos
-        ├── dashboard.js          Panel de estadísticas
-        ├── reports.js            Búsqueda, filtros y gestión de reportes
-        ├── report-card.js        Tarjetas de incidencias
-        ├── report-evidence.js    Controles de fotografía y ubicación
-        ├── report-form.js        Registro y edición de incidencias
-        └── select-picker.js     Selector accesible reutilizable
+        ├── components.js
+        ├── dashboard.js
+        ├── report-card.js
+        ├── report-evidence.js
+        ├── report-form.js
+        ├── reports.js
+        └── select-picker.js
 ```
 
-Los iconos de la interfaz están en `assets/icons/ui.svg`.
+## Ejecución local
 
-## Ejecutar con Live Server
+1. Clona el repositorio y abre la carpeta en Visual Studio Code.
+2. Con la extensión Live Server instalada, haz clic derecho en `index.html` y selecciona **Open with Live Server**.
+3. Abre la dirección local que indique la extensión. Usa `localhost` o `127.0.0.1` para disponer de un contexto seguro.
 
-1. Abre la carpeta del proyecto en Visual Studio Code.
-2. Con la extensión Live Server disponible, haz clic derecho sobre `index.html` y selecciona **Open with Live Server**.
-3. Usa la dirección local que abra el navegador. Puedes acceder directamente a `#inicio`, `#registrar` y `#reportes`.
+Como alternativa, desde la raíz ejecuta `python -m http.server 5500 --bind 127.0.0.1` y abre `http://127.0.0.1:5500/`. Esta alternativa evita el cliente de recarga de Live Server, cuyo WebSocket puede mostrar un error al desconectarse.
 
-Usa `localhost` o `127.0.0.1` para Live Server y HTTPS para probar desde otro dispositivo. El manifiesto y el Service Worker usan rutas relativas para funcionar en la raíz o bajo un subdirectorio. Si Live Server inyecta su cliente de recarga, puede aparecer un mensaje de su WebSocket al desconectarte. Para aislar esa extensión durante las pruebas, puedes servir la misma carpeta con `python -m http.server 5500 --bind 127.0.0.1`.
+## Instalación como PWA
 
-## Instalación
+Abre la aplicación en línea en un navegador compatible. Pulsa **Instalar** cuando aparezca el botón y confirma el diálogo. Si aparece **Cómo instalar**, consulta las opciones del menú del navegador. En Safari para iPhone o iPad, abre **Compartir** y elige **Añadir a pantalla de inicio** si está disponible. Al ejecutar la PWA en modo independiente, el control de instalación se oculta.
 
-Abre la aplicación en línea. Si el navegador ofrece un diálogo programático, el encabezado muestra **Instalar** y el diálogo solo aparece al pulsarlo. Si aparece **Cómo instalar**, consulta la ayuda para instalar desde el menú del navegador o desde **Compartir** en Safari para iPhone o iPad, cuando el navegador ofrezca esa opción. Si inicias la aplicación instalada en modo independiente, el control queda oculto.
+## Service Worker, caché y funcionamiento sin conexión
 
-El manifiesto aporta el nombre, los colores y los iconos que las plataformas compatibles usan para generar su pantalla de inicio. La presentación concreta depende del navegador y del sistema.
+| Recurso | Estrategia |
+| --- | --- |
+| App Shell | Durante la instalación, el Service Worker valida y precarga HTML, CSS, módulos JavaScript, manifiesto e iconos. Si falla la precarga, se cancela la instalación del worker. |
+| Navegación HTML | **Network First.** Intenta obtener la raíz o `index.html` por red. Si la red falla o el HTML pertenece a otra versión, usa el documento precargado. |
+| Recursos estáticos | **Cache First.** Sirve los archivos de la versión activa desde su caché. Si falta un archivo, intenta recuperarlo cuando el servidor ofrece la misma versión. |
+| Recursos adicionales | Las peticiones GET compatibles bajo `assets/` intentan la red y almacenan respuestas válidas en la caché dinámica para reutilizarlas sin conexión. |
 
-## Caché y actualizaciones
+Después de una primera carga correcta y una vez que el Service Worker controla la página, las vistas y la gestión de reportes funcionan sin conexión.
 
-- **Precarga.** El Service Worker comprueba y guarda el HTML, el CSS, todos los módulos de la aplicación, el manifiesto y los iconos. Si la precarga falla, la instalación del Service Worker se cancela.
-- **Navegación HTML (Network-First).** Se intenta la red para la raíz y `index.html`. Si la red falla o el HTML recibido pertenece a otra versión, se usa el HTML precargado. Las rutas por hash siguen gestionadas por JavaScript.
-- **Recursos de la App Shell (Cache-First).** Los archivos de la versión activa se sirven de su caché precargada. Si falta un archivo, solo se intenta recuperar de la red cuando el servidor sigue ofreciendo esa versión. Las peticiones GET de recursos adicionales compatibles bajo `assets/` intentan la red y guardan respuestas válidas para futuras visitas offline.
-- **Versiones.** Incrementa juntos `VERSION` en `sw.js` y el valor de `app-shell-version` en `index.html` al publicar cualquier cambio en la App Shell o su estrategia de caché. Actualiza la lista `shell` al agregar o quitar archivos y publica el conjunto en una sola versión. El nuevo Service Worker espera a que se cierren las páginas controladas por el anterior y, al activarse, elimina las cachés antiguas del proyecto para ese ámbito. IndexedDB conserva los reportes entre versiones.
+**Actualizaciones.** Al publicar cambios en la App Shell o su estrategia de caché, incrementa juntos `VERSION` en `sw.js` y el valor de `app-shell-version` en `index.html`. Actualiza la lista `shell` cuando agregues o retires recursos necesarios y publica el conjunto en una sola entrega. El nuevo worker espera a que se cierren las páginas controladas por el anterior. Al activarse, elimina las cachés obsoletas del proyecto en ese ámbito y conserva los reportes en IndexedDB.
 
-## Pruebas de instalación y funcionamiento offline
+## Persistencia local mediante IndexedDB
 
-1. Carga la aplicación en línea y revisa **Application → Service Workers** en Chrome DevTools. Espera a que el Service Worker esté activo y controle la pestaña. En **Cache Storage**, revisa la lista de recursos precargados.
-2. Registra una incidencia con fotografía y ubicación si están disponibles. Activa **Offline** en DevTools y recarga usando la recarga normal. Recorre las tres vistas, abre el reporte y comprueba que se vean la evidencia y las coordenadas.
-3. Sin conexión, crea un reporte, edítalo, cambia su estado, búscalo, aplica filtros y elimínalo. Comprueba los contadores del panel. La cámara depende del permiso y del dispositivo. La ubicación puede seguir disponible, devolver un error o agotar su tiempo de espera según el dispositivo.
-4. Quita **Offline**. Para probar una actualización, incrementa ambas versiones, vuelve a cargar para que el navegador detecte el Service Worker y espera a que termine la precarga. Cierra las pestañas y ventanas de la aplicación y vuelve a abrirla en el mismo origen. Comprueba que aparezca la caché nueva y que sigan disponibles los reportes.
-5. En un navegador con interfaz, prueba abrir y cancelar el diálogo de instalación, o sigue **Cómo instalar**. Instala la aplicación, ábrela desde el sistema y comprueba que se muestre en modo independiente. En un dispositivo compatible, revisa el icono y la pantalla de inicio.
+La base `ChismosoAnonimoDB` (versión 1) usa el almacén `reportes`, con un UUID como clave. Guarda los campos de la incidencia, las fechas de creación y actualización en formato ISO, la fotografía como `Blob` JPEG y la ubicación como latitud, longitud y precisión en metros. La fotografía y la ubicación admiten `null`.
 
-## Verificación local
+Los reportes son independientes por navegador, perfil y origen (protocolo, host y puerto). La aplicación no los envía a autoridades, servidores externos ni otros usuarios.
 
-1. Registra una incidencia y recarga **Mis reportes** usando la misma dirección y el mismo puerto. Comprueba que conserve los datos y que **Inicio** actualice los totales.
-2. Busca por título o descripción, combina los filtros, cambia el estado y edita la incidencia. Prueba cancelar y luego confirmar su eliminación.
-3. Desde `localhost` o HTTPS, permite y deniega la cámara y la ubicación. Comprueba que puedes guardar sin evidencia. Con la cámara abierta, abandona el formulario y verifica que se apague el indicador de uso del navegador.
-4. Comprueba los controles de selección a 320, 375, 390, 768 y 1280 px. Abre un selector con Enter o Espacio, recorre las opciones con las flechas y confirma con Enter. Comprueba que Escape y un toque fuera cierren el menú, y que Tab continúe al siguiente control. Prueba también en un teléfono.
+## Cámara, geolocalización y permisos
 
-Chrome puede recordar los permisos del origen, que incluye el protocolo, el host y el puerto. Para volver a probar el aviso, restablece los permisos de cámara y ubicación desde la configuración del sitio. Al abrir el formulario, ambas funciones deben permanecer inactivas hasta que pulses su botón.
+- **Cámara.** `getUserMedia()` se invoca al pulsar **Abrir cámara**. Canvas reduce la captura y genera un JPEG para guardarlo localmente. La cámara libera sus pistas al cerrarla, al terminar la captura o al salir del formulario.
+- **Geolocalización.** `getCurrentPosition()` se invoca al pulsar **Obtener ubicación**. La aplicación muestra las coordenadas y la precisión y permite actualizarlas o quitarlas.
+- **Permisos.** Estas funciones requieren un contexto seguro (HTTPS o bucle local) y permiso del navegador. El formulario admite reportes sin evidencia cuando un permiso se deniega o el dispositivo no está disponible. El navegador puede recordar decisiones anteriores para el mismo origen. Para repetir la prueba de permisos, restablécelos desde la configuración del sitio.
 
-La base local `ChismosoAnonimoDB` (versión 1) guarda las incidencias en el almacén `reportes` por UUID. Cada registro incluye título, descripción, categoría, prioridad, estado y fechas de creación y actualización en formato ISO. La fotografía se guarda como Blob JPEG y la ubicación como latitud, longitud y precisión en metros. Ambos campos admiten `null`.
+## Credenciales de prueba
+
+La aplicación **no requiere registro, inicio de sesión ni credenciales de prueba**. Las tres vistas están disponibles directamente al abrir la URL.
+
+## Capturas de pantalla
+
+Las capturas documentan distintas etapas del proyecto. Las imágenes del formulario y de Mis reportes corresponden a una etapa anterior a la integración de IndexedDB y la evidencia.
+
+### Panel y vista móvil
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/dashboard.png" width="460" alt="Panel de incidencias en escritorio"></td>
+    <td align="center"><img src="docs/screenshots/vista-movil.png" width="155" alt="Panel con navegación inferior en vista móvil"></td>
+  </tr>
+  <tr>
+    <td>Panel de estadísticas y reportes recientes.</td>
+    <td>Diseño móvil con navegación inferior.</td>
+  </tr>
+</table>
+
+### Formulario y consulta de reportes
+
+<table>
+  <tr>
+    <td align="center"><img src="docs/screenshots/registro.png" width="330" alt="Formulario de registro en una versión inicial"></td>
+    <td align="center"><img src="docs/screenshots/reportes.png" width="330" alt="Vista inicial de Mis reportes con sus filtros"></td>
+  </tr>
+  <tr>
+    <td>Diseño inicial del formulario de incidencias.</td>
+    <td>Diseño inicial de la consulta y sus filtros.</td>
+  </tr>
+</table>
+
+### Aplicación instalada
+
+<img src="docs/screenshots/instalacion.png" width="640" alt="Chismoso Anónimo abierto en su propia ventana">
+
+La PWA se ejecuta en una ventana independiente.
+
+### Funcionamiento sin conexión
+
+<img src="docs/screenshots/offline.png" width="640" alt="Mis reportes muestra una incidencia guardada mientras Chrome DevTools está en modo Offline">
+
+La vista Mis reportes muestra una incidencia guardada localmente con la red desactivada en Chrome DevTools.
+
+## Pruebas y verificaciones
+
+**Automatizadas.** Las verificaciones incluyen sintaxis JavaScript y formato de los PNG. En Chrome automatizado se comprueban el manifiesto, la precarga y actualización de cachés, el diseño a 320, 375, 390, 768 y 1280 px, la carga del favicon y la navegación sin conexión. Las pruebas con IndexedDB real cubren persistencia tras recargar, alta, consulta, edición, cambios de estado, eliminación, filtros y estadísticas. Para las pruebas de evidencia se usan cámara virtual y coordenadas emuladas.
+
+**Manuales.** La revisión de la entrega confirma la instalación, la activación del Service Worker, el uso de caché, la operación sin conexión y la persistencia. Para reproducirla:
+
+1. Abre la app en línea y revisa **Application → Service Workers** y **Cache Storage** en Chrome DevTools. Confirma que la página esté controlada y que la App Shell esté precargada.
+2. Registra una incidencia con evidencia si el dispositivo la permite. Activa **Offline**, recarga normalmente y navega entre las vistas. Comprueba la recuperación del reporte y su evidencia. Prueba crear, buscar, filtrar, editar, cambiar de estado y eliminar una incidencia.
+3. Restablece la conexión. Para probar una actualización en un entorno local, cambia ambas versiones y espera la precarga. Cierra las ventanas de la aplicación, vuelve a abrirla en el mismo origen y verifica el cambio de caché y la conservación de los reportes.
+4. Comprueba el menú de instalación y abre la aplicación en modo independiente. Revisa el formulario con teclado y pantalla táctil. Prueba también la concesión y denegación de permisos, y verifica que la cámara se libere al salir del formulario.
+
+## Consideraciones y limitaciones
+
+- El primer acceso requiere conexión. El modo offline empieza cuando termina la precarga y el Service Worker controla la página.
+- La instalación y la pantalla de inicio dependen del navegador y del sistema. La cámara depende del hardware y de sus permisos. La ubicación puede fallar o exceder el tiempo de espera cuando el dispositivo no obtiene una posición.
+- No hay backend, sincronización ni respaldo remoto. Borrar los datos del sitio puede eliminar los reportes locales.
